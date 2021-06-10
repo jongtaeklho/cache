@@ -1,0 +1,8 @@
+caching:
+  specs:
+    test:
+      timeout: 1
+      max : 400
+    cache:
+      timeout: 1
+      max : 400
