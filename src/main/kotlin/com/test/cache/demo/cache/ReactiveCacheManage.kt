@@ -1,4 +1,7 @@
 package com.test.cache.demo.cache
 
-class ReactiveCacheManage {
+import reactor.core.publisher.Mono
+
+interface ReactiveCacheManage {
+    fun<T> findCachedMono(cacheName: String, key: String, retriever: () -> Mono<*>, classType: Class<T>): Mono<*>
 }

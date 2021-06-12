@@ -11,11 +11,11 @@ class CacheService {
         return Mono.just(1)
     }
 
-    fun testObject(): Mono<TestCache> {
-        print("---------no hit")
+    fun testObject(t: Long): Mono<TestCache> {
+        print("---------no hit\n")
         return Mono.just(
                 TestCache(
-                        id = 1,
+                        id = t+5,
                         name = "test"
                 )
         )

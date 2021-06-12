@@ -4,6 +4,8 @@ import com.test.cache.demo.cache.ReactorMonoCacheable
 import com.test.cache.demo.service.CacheService
 import com.test.cache.demo.service.TestCache
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
@@ -21,9 +23,9 @@ class HelloController(private val cacheService: CacheService) {
         return cacheService.test()
     }
 
-    @ReactorMonoCacheable(name = "cachee")
-    @GetMapping("/test")
-    fun testCache(): Mono<TestCache> {
-        return cacheService.testObject()
+    @ReactorMonoCacheable(name = "cache")
+    @PutMapping("/test")
+    fun testCache(@RequestBody t: Long): Mono<TestCache> {
+        return cacheService.testObject(t)
     }
 }

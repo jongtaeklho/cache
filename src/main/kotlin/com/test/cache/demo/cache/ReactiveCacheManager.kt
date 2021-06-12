@@ -14,11 +14,14 @@ import java.util.function.BiFunction
 @Documented
 annotation class ReactorMonoCacheable(val name: String)
 
-@Component
-class ReactiveCacheManager(private val cacheManager: CacheManager) {
 
-    fun <T> findCachedMono(cacheName: String, key: String, retriever: () -> Mono<*>, classType: Class<T>): Mono<*> {
+
+@Component
+class ReactiveCacheManager(private val cacheManager: CacheManager): ReactiveCacheManage {
+
+    override fun <T> findCachedMono(cacheName: String, key: String, retriever: () -> Mono<*>, classType: Class<T>): Mono<*> {
         val cache = cacheManager.getCache(cacheName)
+        print("dddddd key:${key}\n")
         return CacheMono
                 .lookup(readerGeneric(cache, classType), key)
                 .onCacheMissResume(

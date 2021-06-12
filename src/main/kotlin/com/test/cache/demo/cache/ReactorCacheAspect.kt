@@ -22,19 +22,24 @@ class ReactorCacheAspect(private val reactiveCacheManager: ReactiveCacheManager)
 
     @Around("cachePointcut()")
     fun cacheAround(joinPoint: ProceedingJoinPoint): Any {
+       /* Mono.just(joinPoint).flatMap { it ->
+            val sign = it.signature as MethodSignature
+            val reactiveCacheManage =
+        }*/
         val signature = joinPoint.signature as MethodSignature
         val method = signature.method
 
         val parameterizedType = method.genericReturnType as ParameterizedType
         val rawType = parameterizedType.rawType
 
-        if(!rawType.equals(Mono::class.java)) {
-            throw(IllegalArgumentException("The return type is not Mono"))
+        if(rawType != Mono::class.java) {
+            throw(IllegalArgumentException("The return type is not Mono\n"))
         }
         val reactorCacheable = method.getAnnotation(ReactorMonoCacheable::class.java)
         val cacheName = reactorCacheable.name
         val args = joinPoint.args
-        print(args)
+        print(args.size)
+        print(args[0])
         val retriever = {
             try{
                 joinPoint.proceed(args) as Mono<*>
@@ -55,6 +60,6 @@ class ReactorCacheAspect(private val reactiveCacheManager: ReactiveCacheManager)
 
     private fun generateKey(vararg objects: Any): String {
         print(objects)
-        return objects.map{ obj -> obj.toString()}.joinToString { ":" }
+        return objects.joinToString(separator = ":") { obj -> obj.toString() }
     }
 }
