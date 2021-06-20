@@ -35,8 +35,6 @@ class ReactorCacheAspects(private val cacheManagers: List<ReactiveCacheManager>)
         val reactorCacheable = method.getAnnotation(MonoCacheable::class.java)
         val cacheName = reactorCacheable.name
         val args = joinPoint.args
-        print(args.size)
-        print(args[0])
         val retriever = {
             try{
                 joinPoint.proceed(args) as Mono<*>
@@ -48,5 +46,7 @@ class ReactorCacheAspects(private val cacheManagers: List<ReactiveCacheManager>)
         val returnTypeInsideMono = parameterizedType.actualTypeArguments[0]
         val returnClass = ResolvableType.forType(returnTypeInsideMono).resolve() as Class<*>
         return cacheManagers.findLast { it.isSupport(cacheName) }?.findCachedMono(args[0], retriever, returnClass)!!
+
+
     }
 }

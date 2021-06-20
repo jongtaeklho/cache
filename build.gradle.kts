@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("io.projectreactor.addons:reactor-extra:3.3.0.RELEASE")
 	implementation("com.github.ben-manes.caffeine:caffeine:2.8.5")
+	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
 	implementation("org.springframework.boot:spring-boot-starter-aop:2.3.0.RELEASE")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")

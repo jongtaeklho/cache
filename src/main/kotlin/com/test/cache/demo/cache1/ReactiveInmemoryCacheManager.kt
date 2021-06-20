@@ -48,7 +48,10 @@ class ReactiveInmemoryCacheManager (
     private fun <T> reader(returnType: Class<T>) = { key: Any ->
         val result = cache.get(key!!, returnType)
 
-        Mono.justOrEmpty(result).map<Signal<*>> { Signal.next(it) }
+        print(result)
+        Mono.justOrEmpty(result).map<Signal<*>> {
+
+            Signal.next(it) }
     }
     private fun writer(): BiFunction<Any, Signal<*>, Mono<Void>> = BiFunction { key, signal ->
         Mono.fromRunnable {

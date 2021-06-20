@@ -35,4 +35,18 @@ class HelloController(private val cacheService: CacheService) {
     fun testCache(@RequestBody t: Long): Mono<TestCache> {
         return cacheService.testObject(t)
     }
+
+    @MonoCacheable(name = "redis")
+    @PutMapping("/redis")
+    fun testRedis(@RequestBody t: String): Mono<List<TestCache>> {
+        return Mono.just(listOf(
+                TestCache(
+                        id = 1,
+                        name = "jolho"
+                ),TestCache(
+                id = 1,
+                name = "jolho"
+        )
+        ))
+    }
 }

@@ -6,3 +6,8 @@ caching:
     cache:
       timeout: 1
       max : 400
+
+spring:
+  redis:
+    host: localhost
+    port: 6379

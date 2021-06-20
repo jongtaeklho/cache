@@ -21,10 +21,10 @@ class ReactiveInMemoryCacheConfig {
         return Ticker.systemTicker()
     }
 
-
     @Bean
     fun testInMemoryCache() = ReactiveInmemoryCacheManager (
-            "test1",4, 3, tickere())
+            "test1",4, 3, tickere()
+    )
 
 
 }
