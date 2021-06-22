@@ -2,16 +2,14 @@ package com.test.cache.demo.controller
 
 import com.test.cache.demo.cache.ReactorMonoCacheable
 import com.test.cache.demo.cache1.MonoCacheable
+import com.test.cache.demo.cache1.RedisService
 import com.test.cache.demo.service.CacheService
 import com.test.cache.demo.service.TestCache
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController
-class HelloController(private val cacheService: CacheService) {
+class HelloController(private val cacheService: CacheService, private val redisService: RedisService) {
 
     @GetMapping("/hello")
     fun helloController(): String {
@@ -48,5 +46,15 @@ class HelloController(private val cacheService: CacheService) {
                 name = "jolho"
         )
         ))
+    }
+
+    @PostMapping("redis/value")
+    fun setValue(@RequestBody testCahce: TestCache) {
+        redisService.set("dd", testCahce)
+    }
+
+    @GetMapping("redis/get")
+    fun getValue(): Mono<TestCache> {
+        return redisService.get("dd")
     }
 }

@@ -19,18 +19,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 class ReactiveRedisCacheConfig(
         @Value("\${spring.redis.host}") private val redisHost: String,
         @Value("\${spring.redis.port}") private val redisPort: Int,
-        private val ticker: Ticker
+        private val factory: ReactiveRedisConnectionFactory
 ) {
 
-    @Bean
-    fun reactiveRedisConnectionFactory(): ReactiveRedisConnectionFactory {
-        return LettuceConnectionFactory(redisHost, redisPort)
-    }
 
     @Bean
     fun reactiveRedisTemplate() : ReactiveRedisTemplate<String, TestCache> {
         val keyJsonSerializer = StringRedisSerializer()
-        val jsonSerializer = Jackson2JsonRedisSerializer<TestCache>(TestCache::class.java)
+        val jsonSerializer = Jackson2JsonRedisSerializer(TestCache::class.java)
         jsonSerializer.setObjectMapper(ObjectMapper().registerModule(KotlinModule()))
 
         val context = RedisSerializationContext
@@ -40,9 +36,7 @@ class ReactiveRedisCacheConfig(
                 .hashKey(keyJsonSerializer)
                 .hashValue(jsonSerializer)
                 .build()
-        return ReactiveRedisTemplate<String, TestCache>(reactiveRedisConnectionFactory(), context)
+        return ReactiveRedisTemplate(factory, context)
     }
 
-    @Bean
-    fun testRedis() = ReactiveRedisCacheManager(reactiveRedisTemplate(), ticker, "redis")
 }
